@@ -1,83 +1,83 @@
 # KYC Document Validation Application
 
-Este proyecto es una aplicación de validación de documentos que utiliza una API externa para verificar la autenticidad de los documentos proporcionados por un usuario. La aplicación está dividida en dos partes: el backend (`kyc-api`) y el frontend (`kyc-app`).
+This project is a document validation application that uses an external API to verify the authenticity of documents provided by a user. The application is divided into two parts: the backend (`kyc-api`) and the frontend (`kyc-app`).
 
-## Tecnologías Principales
+## Main Technologies
 
 - **Frontend**: Vue 3, Pinia, Vue Router, Vuetify, Tailwind CSS
 - **Backend**: Go, CHI, GORM
-- **Base de Datos**: PostgreSQL
+- **Database**: PostgreSQL
 
-## Estructura del Proyecto
+## Project Structure
 
-- **kyc-api**: Backend de la aplicación.
-- **kyc-app**: Frontend de la aplicación.
+- **kyc-api**: Backend of the application.
+- **kyc-app**: Frontend of the application.
 
-## Configuración del Backend (kyc-api)
+## Backend Setup (kyc-api)
 
-1. **Clonar el repositorio**:
+1. **Clone the repository**:
    ```bash
-   git clone <URL_DEL_REPOSITORIO>
+   git clone <REPOSITORY_URL>
    cd kyc-api
    ```
 
-2. **Instalar dependencias**:
+2. **Install dependencies**:
    ```bash
    go mod tidy
    ```
 
-3. **Configurar variables de entorno**:
-   Crea un archivo `.env` en la raíz del proyecto y define variables relacionadas con la base de datos donde se guardará la información, api keys, url api externa, puerto:
+3. **Configure environment variables**:
+   Create a `.env` file in the root of the project and define variables related to the database where information will be stored, API keys, external API URL, and port.
 
-
-4. **Ejecutar la aplicación**:
+4. **Run the application**:
    ```bash
    go run main.go
    ```
 
-5. **Migrar la base de datos**:
-   La aplicación migrará automáticamente las tablas necesarias al iniciar.
+5. **Migrate the database**:
+   The application will automatically migrate the necessary tables upon startup.
 
-## Configuración del Frontend (kyc-app)
+## Frontend Setup (kyc-app)
 
-1. **Clonar el repositorio**:
+1. **Clone the repository**:
    ```bash
-   git clone <URL_DEL_REPOSITORIO>
+   git clone <REPOSITORY_URL>
    cd kyc-app
    ```
 
-2. **Instalar dependencias**:
+2. **Install dependencies**:
    ```bash
    npm install
    ```
 
-3. **Ejecutar la aplicación**:
+3. **Run the application**:
    ```bash
    npm run dev
    ```
 
-4. **Abrir en el navegador**:
-   Visita `http://localhost:5173` para acceder a la aplicación.
+4. **Open in the browser**:
+   Visit `http://localhost:5173` to access the application.
 
-## Uso de la Aplicación
+## Application Usage
 
-1. **Subir Documentos**: Los usuarios pueden subir imágenes de sus documentos (frente y reverso) en el paso 3 del proceso de onboarding.
-2. **Validación**: Al enviar los documentos, la aplicación realiza una llamada a la API externa para validar los documentos.
-3. **Resultados**: Los resultados de la validación se mostrarán en la pantalla después de un breve período.
+1. **Upload Documents**: Users can upload images of their documents (front and back) in step 3 of the onboarding process.
+2. **Validation**: Upon submitting the documents, the application makes a call to the external API to validate the documents.
+3. **Results**: The results of the validation will be displayed on the screen after a brief period.
 
-## Rutas de la API
+## API Routes
 
-- **POST /validations/create**: Crea una nueva validación.
- - En el body espera un tipo de validación, tipo de documento, pais, timeout y autorización del usuario
-- **GET /validations/result**: Obtiene el resultado de la validación.
-- **GET /validations/get-config**: Obtiene la configuración de los países y tipos de documentos.
+- **POST /validations/create**: Creates a new validation.
+  - The body expects a validation type, document type, country, timeout, and user authorization.
+- **GET /validations/result**: Retrieves the result of the validation.
+- **GET /validations/get-config**: Retrieves the configuration of allowed countries and document types.
 
-#### Modelo de Datos
 
-- **ValidationData**: Modelo para la gestión de la información de validación.
-- **Countries**: Modelo para la gestión de datos de países permitidos y donde se desea hacer la validación.
-- **DocType**: Modelo para la gestión de tipo de documento de acuerdo con el país. 
+#### Data Models
+
+- **ValidationData**: Model for managing validation information.
+- **Countries**: Model for managing data of allowed countries where validation is desired.
+- **DocType**: Model for managing document types according to the country.
 
 ## Contacto
 
-*Para mas información puedes escribirme a mi correo grojas9807@gmail.com o contactarme por [LinkedIn](https://www.linkedin.com/in/gavrojas-dev/)*
+*For more information, you can email me at grojas9807@gmail.com or contact me on [LinkedIn](https://www.linkedin.com/in/gavrojas-dev/)*

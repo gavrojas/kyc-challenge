@@ -1,39 +1,66 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useNavigationStore } from '@/stores/navigation';
+import { ref, watch, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useNavigationStore } from '@/stores/navigation'
+import { useDocumentStore } from '@/stores/documents'
+import { useValidations } from '@/services/validation'
+import type { Country, DocType } from '@/types'
 
-const accepted = ref(false);
-const country = ref('');
-const countries = ['Colombia', 'Chile', 'México', 'Peru', 'Brasil', 'Costa Rica'];
+const { createValidation, getInfoCountries } = useValidations()
+const accepted = ref(false)
 
-const store = useNavigationStore();
-const router = useRouter();
+const navigationStore = useNavigationStore()
+const documentStore = useDocumentStore()
 
-const handleNext = () => {
+const countries = Object.keys(documentStore.infoCountries) as Country[]
+const country = ref<Country | null>(null)
+const docTypes = ref<DocType[]>([])
+const docType = ref<DocType | null>(null)
+
+const router = useRouter()
+
+const handleNext = async () => {
+  documentStore.setUserAuthorization(accepted.value)
   if (accepted.value && country.value) {
-    store.nextStep();
-    router.push('/onboarding-step-2'); 
-    console.log(store.progress);
+    navigationStore.nextStep()
+    router.push('/onboarding-step-2')
   } else {
-    alert('Please accept and select a country');
+    alert('Please accept and select a country')
   }
-};
+  await createValidation()
+}
+
+const handleCountryChange = (selectedCountry: Country) => {
+  documentStore.setCountry(selectedCountry) // Guardar el país en el store
+  docTypes.value = documentStore.infoCountries[selectedCountry]?.documentTypes || []
+}
+
+const handleDocType = (selectedDocType: DocType) => {
+  documentStore.setDocType(selectedDocType)
+}
+
+watch(country, (newCountry) => {
+  if (newCountry) {
+    handleCountryChange(newCountry)
+  }
+})
+
+onMounted(async () => {
+  await getInfoCountries()
+})
 </script>
 
 <template>
   <v-container class="p-4">
     <!-- Barra de progreso -->
-    <v-progress-linear 
-      :value="store.progress"
+    <v-progress-linear
+      :value="navigationStore.progress"
       height="5"
       color="primary"
-      v-if="store.progress"
+      v-if="navigationStore.progress"
     />
     <v-card class="p-4">
-      <v-card-title>
-        Step 1 of 3: Authorization
-      </v-card-title>
+      <v-card-title> Step 1 of 3: Authorization </v-card-title>
       <v-card-text>
         <v-checkbox v-model="accepted" label="I accept the document validation" />
         <v-select
@@ -43,6 +70,15 @@ const handleNext = () => {
           variant="underlined"
           item-text="name"
           item-value="value"
+        />
+        <v-select
+          v-model="docType"
+          :items="docTypes"
+          label="Select your document type"
+          variant="underlined"
+          item-text="name"
+          item-value="value"
+          @change="handleDocType($event)"
         />
       </v-card-text>
       <v-card-actions>

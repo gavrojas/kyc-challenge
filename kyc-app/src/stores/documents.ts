@@ -1,35 +1,63 @@
-import { ref } from 'vue';
-import { defineStore } from 'pinia';
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
+import type { SessionData, Country, ValidationResultInfo, DocType, InfoCountries } from '@/types'
 
 export const useDocumentStore = defineStore('documents', () => {
-  const frontImage = ref<File | null>(null);
-  const backImage = ref<File | null>(null);
-  const validationResult = ref<{ message: string } | null>(null);
-  const loading = ref<boolean>(false);
+  const frontImage = ref<File | null>(null)
+  const backImage = ref<File | null>(null)
+  const validationResult = ref<{ message: string } | null>(null)
+  const loading = ref<boolean>(false)
+  const sessionData = ref<SessionData[]>([])
+  const ValidationResultInfo = ref<ValidationResultInfo | null>(null)
 
-  const uploadImages = async (): Promise<void> => {
-    if (!frontImage.value || !backImage.value) {
-      alert('Please upload both images');
-      return;
-    }
+  const infoCountries: InfoCountries = {
+    Colombia: { documentTypes: [] },
+    Chile: { documentTypes: [] },
+    Mexico: { documentTypes: [] },
+    Peru: { documentTypes: [] },
+    Brasil: { documentTypes: [] },
+    'Costa Rica': { documentTypes: [] },
+    Other: { documentTypes: [] }
+  }
 
-    loading.value = true;
-    const formData = new FormData();
-    formData.append('front', frontImage.value);
-    formData.append('back', backImage.value);
+  const type = ref<string>('document-validation')
+  const timeout = ref(900)
+  const documentType = ref<DocType>('national-id')
+  const selectedCountry = ref<Country>('Colombia')
+  const userAuthorization = ref<boolean>(false)
 
-    try {
-      /*
-      Insertar integración API upload
-      */
-      // const result = await response.json();
-      // validationResult.value = result;
-    } catch (error) {
-      console.error('Validation failed:', error);
-    } finally {
-      loading.value = false;
-    }
-  };
+  const setCountry = (country: Country) => {
+    selectedCountry.value = country
+  }
 
-  return { frontImage, backImage, validationResult, loading, uploadImages };
-});
+  const setDocType = (docType: DocType) => {
+    documentType.value = docType
+  }
+
+  const setUserAuthorization = (value: boolean) => {
+    userAuthorization.value = value
+  }
+
+  const updateInfoCountries = (newInfoCountries: InfoCountries) => {
+    Object.assign(infoCountries, newInfoCountries)
+  }
+
+  return {
+    frontImage,
+    backImage,
+    validationResult,
+    type,
+    timeout,
+    documentType,
+    sessionData,
+    loading,
+    userAuthorization,
+    selectedCountry,
+    ValidationResultInfo,
+    infoCountries,
+    setCountry,
+    setDocType,
+    setUserAuthorization,
+    updateInfoCountries
+  }
+})

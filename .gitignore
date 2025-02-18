@@ -1,2 +1,6 @@
-.env
+kyc-api/.env
+kyc-api/request.http
 notes.txt
+kyc-tools/db
+kyc-tools/.DS_Store
+kyc-tools/.env

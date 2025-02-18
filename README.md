@@ -78,6 +78,6 @@ This project is a document validation application that uses an external API to v
 - **Countries**: Model for managing data of allowed countries where validation is desired.
 - **DocType**: Model for managing document types according to the country.
 
-## Contacto
+## Contact
 
 *For more information, you can email me at grojas9807@gmail.com or contact me on [LinkedIn](https://www.linkedin.com/in/gavrojas-dev/)*
